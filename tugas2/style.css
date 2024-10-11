@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    font-family: 'Inknut Antiqua', serif;
+    background-image: linear-gradient(to right, #0D0D17, #181829);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.logo {
+    background: linear-gradient(to left, #A1A1FF, #EBEBFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+/* --------------------Header-------------------- */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(161, 161, 255, 0.6), 0 0 20px rgba(161, 161, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(161, 161, 255, 1), 0 0 50px rgba(161, 161, 255, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(161, 161, 255, 0.6), 0 0 20px rgba(161, 161, 255, 0.4);
+    }
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #1c1c1c;
+    animation: glow 2s infinite;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 700px;
+}
+
+.search-bar a {
+    margin-right: 10px;
+}
+
+.search-bar img {
+    width: 28px;
+    height: auto;
+}
+
+.search-bar input {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #1c1c1c;
+    color: #fff;
+    font-size: 16px;
+    width: 100%;
+    border: 1px, solid, #8888D0; /* Menghilangkan border */
+    outline: none;
+}
+
+
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff;
+    transition: color 0.2s linear;
+}
+
+nav a:hover {
+    color: #A1A1FF;
+}
+
+/* ----------------------end header sevtion------------------------- */
+
+/* --------------------Main content----------------------- */
+main {
+    flex-grow: 1;
+    padding: 40px 20px;
+    color: #fff;
+}
+
+/* Section untuk kategori */
+.category {
+    margin-bottom: 30px;
+}
+
+.category h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    text-shadow: 
+        1px 1px 0 #8888D0,  /* Bayangan ke kanan bawah */
+        -1px 1px 0 #8888D0, /* Bayangan ke kiri bawah */
+        2px -1px 0 #8888D0, /* Bayangan ke kanan atas */
+        0 0 0 #8888D0; /* Bayangan ke kiri atas */
+    font-weight: bold;
+}
+
+.item {
+    min-width: 200px; /* Lebar minimum untuk setiap item */
+    height: 300px;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: transform 0.3s ease; 
+    box-shadow: 0 0 9px rgba(161, 161, 255, 0.5);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.item:hover {
+    transform: scale(1.05); /* Efek zoom saat item di-hover */
+    box-shadow: 0 0 15px rgba(161, 161, 255, 0.7);
+}
+
+.item a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.item a img {
+    width: 100%;  /* Mengisi penuh lebar item */
+    height: 100%; /* Mengisi penuh tinggi item */
+    object-fit: cover;  /* Memastikan gambar tidak terdistorsi */
+    border-radius: 10px;  /* Mengikuti bentuk container */
+    color: #fff;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto; /* Mengaktifkan scroll horizontal */
+    padding: 20px 20px;
+    gap: 15px;
+    scrollbar-color: #5c5c91 #333; /* Warna scrollbar (opsional) */
+    scrollbar-width: auto; /* Pastikan scrollbar selalu muncul */
+}
+
+/* Mengatur tampilan scrollbar untuk Chrome, Edge, Safari */
+.scroll-container::-webkit-scrollbar {
+    height: 8px; /* Tinggi scrollbar */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #8888D0; /* Warna dari 'thumb' scrollbar */
+    border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: #333; /* Warna track scrollbar */
+}
+
+/* ------------------------end main section------------------------ */
+
+
+/* ---------------------------Footer---------------------------- */
+footer {
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 30px 0;
+    animation: glow 2s infinite alternate;
+}
+
+footer a {
+    color: #fff;
+}
+
+.footer-container {
+    display: flex;
+    align-items: center;
+}
+
+.footer-left {
+    position: absolute;
+    right: 50%;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.footer-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 70px; /* Sesuaikan tinggi sesuai desain */
+    display: flex;
+    align-items: center;
+}
+
+.vertical-line {
+    width: 1px;
+    height: 100%;
+    background-color: #ccc;
+}
+
+.footer-container ul li {
+    margin: 9px 0;
+}
+
+.footer-container a:hover{
+    color: #A1A1FF;
+}
+
+.footer-right {
+    position: absolute;
+    left: 50%;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.footer-right p {
+    color: #8888D0;
+}
+
+.footer-logo {
+    margin-left: 50px;
+}
