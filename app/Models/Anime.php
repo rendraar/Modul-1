@@ -58,30 +58,44 @@ class Anime extends DatabaseConfig {
 
     // Function untuk membuat data baru
     public function create($data) {
+        // Cek apakah tabel kosong
+        $checkEmptyQuery = "SELECT COUNT(*) as total FROM datanime";
+        $result = $this->conn->query($checkEmptyQuery);
+        $row = $result->fetch_assoc();
+    
+        // Jika tabel kosong, reset auto-increment ke 1
+        if ($row['total'] == 0) {
+            $resetQuery = "ALTER TABLE datanime AUTO_INCREMENT = 1";
+            $this->conn->query($resetQuery);
+        }
+    
+        // Data yang akan dimasukkan
         $AnimeName = $data['anime_name'];
         $Type = $data['type'];
         $Status = $data['status'];
         $ImageUrl = $data['image_url'];
-
+    
+        // Query untuk insert data
         $query = "INSERT INTO datanime (anime_name, type, status, image_url) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        
+    
         if (!$stmt) {
             return ["success" => false, "error" => $this->conn->error];
         }
     
+        // Bind parameter
         $stmt->bind_param("ssss", $AnimeName, $Type, $Status, $ImageUrl);
         $success = $stmt->execute();
-        
+    
         if ($success) {
-            $insertedId = $stmt->insert_id; // Get the last inserted ID
+            $insertedId = $stmt->insert_id; // Ambil ID yang terakhir dimasukkan
             $stmt->close();
             return ["success" => true, "id" => $insertedId];
         } else {
             $stmt->close();
             return ["success" => false, "error" => $stmt->error];
         }
-    }
+    }    
 
     // Function untuk update data
     public function update($data, $id) {
