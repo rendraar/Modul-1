@@ -76,7 +76,7 @@ function addItemsToCategory(categoryId, items) {
         // Buat elemen anchor dan image
         const itemLink = document.createElement('a');
         const itemImage = document.createElement('img');
-        itemImage.src = 'assets/images/' + item.image_url;
+        itemImage.src = '../assets/images/' + item.image_url;
         itemImage.alt = item.anime_name;
 
         // Tambahkan event listener untuk klik pada gambar
