@@ -11,8 +11,9 @@
         <input type="text" placeholder="Search" />
       </form>
       <nav>
-        <router-link v-if="$route.path !== '/'" to="/">Home</router-link>
-        <router-link v-if="$route.path !== '/admin'" to="/admin">Admin</router-link>
+        <router-link v-if="$route.path === '/'" to="/admin">Admin</router-link>
+        <router-link v-if="$route.path === '/admin'" to="/">Home</router-link>
+        <router-link v-if="$route.path === '/admin/anime' || $route.path === '/admin/genre'" to="/admin">Back</router-link>
       </nav>
     </header>
 
@@ -22,7 +23,7 @@
     </main>
 
     <!-- Sembunyikan footer jika di halaman admin -->
-    <footer v-if="$route.path !== '/admin'">
+    <footer>
       <div class="footer-container">
         <div class="footer-left">
           <ul>

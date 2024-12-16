@@ -1,204 +1,55 @@
 <template>
   <div class="admin-container">
-    <h1>Manage Anime</h1>
-
-    <!-- Notification Component -->
-    <Notification ref="notification" />
-
-    <!-- Form Tambah Anime Baru -->
-    <form @submit.prevent="handleSubmit">
-      <input type="text" v-model="form.anime_name" placeholder="Anime Name" required />
-      <input type="text" v-model="form.type" placeholder="Type (ongoing, complete, movie)" required />
-      <input type="text" v-model="form.image_url" placeholder="Image URL" required />
-      <input type="text" v-model="form.slug" placeholder="Slug" required />
-      <textarea v-model="form.description" placeholder="Description" required></textarea>
-      <input type="number" v-model="form.genre_id" placeholder="Genre ID" required />
-      <button type="submit">Add</button>
-    </form>
-
-    <!-- Daftar Data Anime -->
-    <table v-if="anime.length > 0">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in anime" :key="item.id || index">
-          <td>{{ item.id || 'No ID' }}</td>
-          
-          <!-- Anime Name (editable) -->
-          <td>
-            <div v-if="editingIndex !== index">
-              {{ item.anime_name || 'Unnamed Anime' }}
-            </div>
-            <div v-else>
-              <input
-                type="text"
-                v-model="editingData.anime_name"
-                placeholder="Anime Name"
-                required
-              />
-            </div>
-          </td>
-
-          <!-- Anime Type (editable) -->
-          <td>
-            <div v-if="editingIndex !== index">
-              {{ item.type || 'Unknown Type' }}
-            </div>
-            <div v-else>
-              <input
-                type="text"
-                v-model="editingData.type"
-                placeholder="Type"
-                required
-              />
-            </div>
-          </td>
-
-          <!-- Actions -->
-          <td>
-            <button v-if="editingIndex !== index" @click="startEditing(index, item)">Edit</button>
-            <button v-else @click="saveEdit(item.id)">Save</button>
-            <button v-if="editingIndex === index" @click="cancelEdit">Cancel</button>
-            <button v-if="editingIndex !== index" @click="deleteAnime(item.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p v-else>No data available</p>
+    <!-- Konten di AdminView -->
+    <div v-if="isAdminPage">
+      <h1>Welcome to the admin dashboard!</h1>
+      <div class="admin-navigation">
+        <router-link to="/admin/anime">
+          <button class="admin-button">Manage Anime</button>
+        </router-link>
+        <router-link to="/admin/genre">
+          <button class="admin-button">Manage Genre</button>
+        </router-link>
+      </div>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import Notification from '../components/Notification.vue';
-
 export default {
-  components: { Notification },
-
-  data() {
-    return {
-      anime: [],
-      form: {
-        anime_name: '',
-        type: '',
-        image_url: '',
-        slug: '',
-        description: '',
-        genre_id: null
-      },
-      editingIndex: null, // Indeks baris yang sedang diedit
-      editingData: {}, // Data sementara untuk diedit
-      isEditing: false, // Menyatakan apakah dalam mode edit
-    };
-  },
-
-  methods: {
-    async fetchAnimes() {
-      try {
-        const response = await axios.get('http://localhost:8000/api/anime');
-        this.anime = response.data;
-      } catch (error) {
-        this.$refs.notification.addNotification('Failed to load anime data.');
-      }
+  computed: {
+    // Menentukan apakah berada di /admin (bukan di /admin/anime atau /admin/genre)
+    isAdminPage() {
+      return this.$route.path === '/admin';
     },
-
-    handleSubmit() {
-      if (this.isEditing) {
-        this.saveEdit(this.editingData.id);
-      } else {
-        this.addNewAnime();
-      }
-    },
-
-    async addNewAnime() {
-      try {
-        const response = await axios.post('http://localhost:8000/api/anime', this.form);
-        this.anime.push(response.data); // Tambahkan anime baru ke array
-        this.resetForm();
-        this.$refs.notification.addNotification('Anime added successfully!');
-      } catch (error) {
-        this.$refs.notification.addNotification('Error adding anime. Please try again.');
-      }
-    },
-
-    startEditing(index, item) {
-      this.isEditing = true;
-      this.editingIndex = index;
-      this.editingData = { ...item }; // Salin data untuk diedit
-    },
-
-    cancelEdit() {
-      this.isEditing = false;
-      this.editingIndex = null;
-      this.editingData = {}; // Reset data editing
-    },
-
-    async saveEdit(id) {
-      try {
-        const response = await axios.put(`http://localhost:8000/api/anime/${id}`, this.editingData);
-
-        // Gantikan objek lama dengan data yang baru di dalam array anime
-        this.anime[this.editingIndex] = { ...this.editingData };  // Ini cara yang lebih reaktif
-
-        // Reset editing state
-        this.cancelEdit();
-
-        this.$refs.notification.addNotification('Anime updated successfully!');
-      } catch (error) {
-        console.log(error);
-        this.$refs.notification.addNotification('Error updating anime. Please try again.');
-      }
-    },
-
-    async deleteAnime(id) {
-      try {
-        await axios.delete(`http://localhost:8000/api/anime/${id}`);
-        this.anime = this.anime.filter(a => a.id !== id);
-        this.$refs.notification.addNotification('Anime deleted successfully!');
-      } catch (error) {
-        this.$refs.notification.addNotification('Error deleting anime. Please try again.');
-      }
-    },
-
-    resetForm() {
-      this.form = {
-        anime_name: '',
-        type: '',
-        image_url: '',
-        slug: '',
-        description: '',
-        genre_id: null
-      };
-      this.isEditing = false;
-    }
-  },
-
-  created() {
-    this.fetchAnimes();
   },
 };
 </script>
 
 <style>
-.admin-container {
-  padding: 20px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-table th,
-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-form {
-  margin-bottom: 20px;
-}
+  button {
+    cursor: pointer;
+  }
+  .admin-container {
+    margin: 0 20px 0 20px;
+    justify-items: center;
+  }
+  .admin-navigation {
+    justify-self: center;
+  }
+  .admin-button {
+    padding: 30px;
+    border: none;
+    font-size: 20px;
+    background-color: black; /* Latar belakang tombol hitam */
+    color: transparent; /* Warna teks transparan */
+    background-image: linear-gradient(to left, #A1A1FF, #EBEBFF); /* Gradasi untuk teks */
+    -webkit-background-clip: text; /* Klip gradasi hanya pada teks */
+    -webkit-text-fill-color: transparent; /* Membuat teks transparan agar gradasi terlihat */
+    transition: all 0.3s ease;
+  }
+  .admin-button:hover {
+    transform: scale(1.05);
+  }
 </style>
