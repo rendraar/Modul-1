@@ -16,6 +16,6 @@ class Anime extends Model
 
     public function genre()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsTo(Genre::class);  
     }
 }
