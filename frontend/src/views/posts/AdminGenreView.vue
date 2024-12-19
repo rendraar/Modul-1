@@ -1,6 +1,6 @@
 <template>
   <div class="admin-container">
-    <h1>Manage Genres</h1>
+    <h1>Manage Genre</h1>
 
     <!-- Notification Component -->
     <Notification ref="notification" />
@@ -55,7 +55,7 @@
 
 <script>
 import axios from 'axios';
-import Notification from '../components/Notification.vue';
+import Notification from '../../components/Notification.vue';
 
 export default {
   components: { Notification },
@@ -78,7 +78,7 @@ export default {
         const response = await axios.get('http://localhost:8000/api/genre');
         this.genre = response.data;
       } catch (error) {
-        this.$refs.notification.addNotification('Failed to load genre data.');
+        this.$refs.notification.addNotification('Failed to load genre data.', 'error');
       }
     },
 
@@ -95,9 +95,9 @@ export default {
         await axios.post('http://localhost:8000/api/genre', this.form);
         await this.fetchGenres(); // Ambil data baru
         this.resetForm();
-        this.$refs.notification.addNotification('Genre added successfully!');
+        this.$refs.notification.addNotification('Genre added successfully!', 'success');
       } catch (error) {
-        this.$refs.notification.addNotification('Error adding genre. Please try again.');
+        this.$refs.notification.addNotification('Error adding genre. Please try again.', 'error');
       }
     },
 
@@ -123,9 +123,9 @@ export default {
         // Reset editing state
         this.cancelEdit();
 
-        this.$refs.notification.addNotification('Genre updated successfully!');
+        this.$refs.notification.addNotification('Genre updated successfully!', 'success');
       } catch (error) {
-        this.$refs.notification.addNotification('Error updating genre. Please try again.');
+        this.$refs.notification.addNotification('Error updating genre. Please try again.', 'error');
       }
     },
 
@@ -133,9 +133,9 @@ export default {
       try {
         await axios.delete(`http://localhost:8000/api/genre/${id}`);
         this.genre = this.genre.filter(g => g.id !== id);
-        this.$refs.notification.addNotification('Genre deleted successfully!');
+        this.$refs.notification.addNotification('Genre deleted successfully!', 'success');
       } catch (error) {
-        this.$refs.notification.addNotification('Error deleting genre. Please try again.');
+        this.$refs.notification.addNotification('Error deleting genre. Please try again.', 'error');
       }
     },
 

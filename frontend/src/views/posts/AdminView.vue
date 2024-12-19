@@ -34,6 +34,7 @@ export default {
   .admin-container {
     margin: 0 20px 0 20px;
     justify-items: center;
+    align-items: center;
   }
   .admin-navigation {
     justify-self: center;

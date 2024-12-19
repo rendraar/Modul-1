@@ -4,11 +4,16 @@
       <!-- Gunakan router-link untuk navigasi -->
       <router-link to="/" class="logo">ngeview</router-link>
       
-      <form v-if="$route.path !== '/admin'" class="search-bar">
-        <a href="#">
+      <form v-if="$route.path !== '/admin'" class="search-bar" @submit.prevent="onSearch">
+        <a @click.prevent="onSearch">
           <img src="/assets/web/search.png" alt="search" />
         </a>
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          placeholder="Search"
+          v-model="searchQuery"
+          @input="onSearch"
+        />
       </form>
       <nav>
         <router-link v-if="$route.path === '/'" to="/admin">Admin</router-link>
@@ -19,7 +24,7 @@
 
     <!-- Placeholder untuk routing -->
     <main>
-      <router-view></router-view>
+      <router-view :search-query="searchQuery"></router-view>
     </main>
 
     <!-- Sembunyikan footer jika di halaman admin -->
@@ -53,5 +58,16 @@
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      searchQuery: "",  // Define searchQuery here
+    };
+  },
+  methods: {
+    onSearch() {
+      // Handle the search functionality here
+      console.log("Searching for:", this.searchQuery);
+    }
+  }
 };
 </script>

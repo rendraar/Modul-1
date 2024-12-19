@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import AdminView from '../views/AdminView.vue';
-import AdminAnimeView from '../views/AdminAnimeView.vue';
-import AdminGenreView from '../views/AdminGenreView.vue';
+import AdminView from '../views/posts/AdminView.vue';
+import AdminAnimeView from '../views/posts/AdminAnimeView.vue';
+import AdminGenreView from '../views/posts/AdminGenreView.vue';
 
 const routes = [
   {
